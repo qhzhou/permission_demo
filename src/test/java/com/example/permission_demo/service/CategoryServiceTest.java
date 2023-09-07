@@ -14,7 +14,7 @@ public class CategoryServiceTest {
 
   @Test
   public void test() {
-    Assertions.assertEquals(3, categoryService.findRefMetricIdsByCategoryId(2).size());
+    Assertions.assertEquals(2, categoryService.findRefMetricIdsByCategoryId(3).size());
   }
 
   @Test
@@ -24,14 +24,12 @@ public class CategoryServiceTest {
       CategoryBO category = categoryService.getCategoryTreeById(1);
       Assertions.assertEquals(1, category.getId());
       Assertions.assertEquals("爷爷节点", category.getName());
-      Assertions.assertEquals(0, category.getMetricIds().size());
       Assertions.assertEquals(3, category.getSubCategoryIds().size());
     }
     {
       CategoryBO category = categoryService.getCategoryTreeById(2);
       Assertions.assertEquals(2, category.getId());
       Assertions.assertEquals("父亲节点1", category.getName());
-      Assertions.assertEquals(3, category.getMetricIds().size());
       Assertions.assertEquals(0, category.getSubCategoryIds().size());
     }
   }
@@ -44,14 +42,14 @@ public class CategoryServiceTest {
     Assertions.assertThrows(IllegalArgumentException.class, () -> categoryService.delete(
         rootCategoryId, false));
 
-    CategoryBO added = categoryService.create(rootCategoryId, "新增测试");
+    CategoryBO added = categoryService.createEmptyFolder(rootCategoryId, "新增测试");
     Integer addedCategoryId = added.getId();
     System.out.println("added category id: " + addedCategoryId);
     Assertions.assertEquals(root.getSubCategoryIds().size() + 1,
         categoryService.getCategoryTreeById(1).getSubCategoryIds().size());
 
     for (int i = 0; i < 10; i++) {
-      categoryService.create(addedCategoryId, "新增子分类" + i);
+      categoryService.createEmptyFolder(addedCategoryId, "新增子分类" + i);
     }
 
     Assertions.assertEquals(10,

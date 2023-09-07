@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS `category`
     `update_time` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `name`        VARCHAR(45) NOT NULL,
     `parent_id`   INT         NOT NULL DEFAULT 0 COMMENT '父category的id',
+    `type`        VARCHAR(20) NOT NULL DEFAULT 'FOLDER',
+    `ref_id`      INT         NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
@@ -16,23 +18,12 @@ insert into `category`(`id`, `name`, `parent_id`)
 values (3, '父亲节点2', 1);
 insert into `category`(`id`, `name`, `parent_id`)
 values (4, '父亲节点3', 1);
-
-
-CREATE TABLE IF NOT EXISTS `category_mapping`
-(
-    `id`          INT        NOT NULL AUTO_INCREMENT,
-    `create_time` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_time` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `category_id` INT        NOT NULL,
-    `type`        TINYINT(2) NOT NULL DEFAULT 1 COMMENT 'Type: \n1 for metrics',
-    `ref_id`      INT        NOT NULL,
-    PRIMARY KEY (`id`)
-);
-
-insert into `category_mapping`(`category_id`, `type`, `ref_id`)
-values (2, 1, 1),
-       (2, 1, 2),
-       (2, 1, 3);
+insert into `category`(`id`, `name`, `parent_id`, `type`, `ref_id`)
+values (5, '儿子节点1', 3, 'METRIC', 123);
+insert into `category`(`id`, `name`, `parent_id`, `type`, `ref_id`)
+values (6, '儿子节点1', 3, 'METRIC', 456);
+insert into `category`(`id`, `name`, `parent_id`, `type`, `ref_id`)
+values (7, '儿子节点1', 4, 'METRIC', 789);
 
 -- -----------------------------------------------------
 -- Table `role`

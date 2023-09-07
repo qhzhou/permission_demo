@@ -2,6 +2,8 @@ package com.example.permission_demo.persistence;
 
 import com.example.permission_demo.persistence.po.CategoryPO;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,10 @@ public class CategoryRepositoryTest {
     Assertions.assertTrue(optional.isPresent());
     Assertions.assertNotNull(optional.map(CategoryPO::getCreateTime));
     Assertions.assertNotNull(optional.map(CategoryPO::getUpdateTime));
-    Assertions.assertEquals(4, categoryRepository.findAllById(
-        Lists.newArrayList(1, 2, 3, 4, 5, 6)).size());
+    Assertions.assertEquals(7, categoryRepository.findAllById(
+        Lists.newArrayList(1, 2, 3, 4, 5, 6, 7)).size());
+    Assertions.assertEquals(7, categoryRepository.findAllById(
+        IntStream.range(0, 100).boxed().collect(Collectors.toList())).size());
     Assertions.assertEquals(3, categoryRepository.findAllByParentId(1).size());
 
     CategoryPO category = optional.get();
@@ -32,7 +36,8 @@ public class CategoryRepositoryTest {
         .orElseThrow(RuntimeException::new);
     Assertions.assertEquals(renamed.getCreateTime().getTime(), category.getCreateTime().getTime());
     Assertions.assertTrue(renamed.getUpdateTime().after(category.getUpdateTime()));
-    Assertions.assertTrue(categoryRepository.updateNameById(category.getId(), category.getName()) > 0);
+    Assertions.assertTrue(
+        categoryRepository.updateNameById(category.getId(), category.getName()) > 0);
 
 
   }

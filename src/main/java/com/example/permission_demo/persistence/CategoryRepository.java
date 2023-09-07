@@ -1,5 +1,6 @@
 package com.example.permission_demo.persistence;
 
+import com.example.permission_demo.core.CategoryType;
 import com.example.permission_demo.persistence.po.CategoryPO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CategoryRepository extends JpaRepository<CategoryPO, Integer> {
 
   List<CategoryPO> findAllByParentId(Integer parentId);
+  List<CategoryPO> findAllByParentIdAndType(Integer parentId, CategoryType type);
 
   @Modifying
   @Query(value = "update category set name = :name, update_time = now() where id = :id")
